@@ -307,113 +307,128 @@
 
     <script>
 
-        const formulario =
-            document.getElementById("formulario");
+const formulario = document.getElementById("formulario");
+const boton = document.getElementById("boton");
+const resultado = document.getElementById("resultado");
 
-        const boton =
-            document.getElementById("boton");
-
-        const resultado =
-            document.getElementById("resultado");
+const API_URL =
+    "https://empty-heart-09b7telebot-api.davidotakudark.workers.dev";
 
 
-        formulario.addEventListener(
-            "submit",
-            async function(event) {
+formulario.addEventListener("submit", async function(event) {
 
-                event.preventDefault();
+    event.preventDefault();
 
+    const nombre = document
+        .getElementById("nombre")
+        .value
+        .trim();
 
-                const nombre =
-                    document
-                        .getElementById("nombre")
-                        .value
-                        .trim();
-
-
-                const mensaje =
-                    document
-                        .getElementById("mensaje")
-                        .value
-                        .trim();
+    const mensaje = document
+        .getElementById("mensaje")
+        .value
+        .trim();
 
 
-                if (!nombre || !mensaje) {
+    if (!nombre || !mensaje) {
 
-                    mostrarResultado(
-                        "Completa todos los campos.",
-                        "error"
-                    );
+        mostrarResultado(
+            "Completa todos los campos.",
+            "error"
+        );
 
-                    return;
-                }
-
-
-                boton.disabled = true;
-
-                boton.textContent =
-                    "⏳ Enviando...";
+        return;
+    }
 
 
-                /*
-                 * AQUÍ CONECTAREMOS NUESTRO BACKEND
-                 *
-                 * NO ponemos aquí el token de Telegram.
-                 *
-                 * Más adelante utilizaremos algo como:
-                 *
-                 * fetch("URL_DE_NUESTRO_BACKEND", {
-                 *     method: "POST",
-                 *     headers: {
-                 *         "Content-Type": "application/json"
-                 *     },
-                 *     body: JSON.stringify({
-                 *         nombre: nombre,
-                 *         mensaje: mensaje
-                 *     })
-                 * });
-                 */
+    boton.disabled = true;
+    boton.textContent = "⏳ Enviando...";
 
 
-                console.log({
-                    nombre: nombre,
-                    mensaje: mensaje
-                });
+    try {
+
+        console.log("Enviando datos al Worker...");
+
+        const respuesta = await fetch(API_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                nombre: nombre,
+                mensaje: mensaje
+            })
+
+        });
 
 
-                // TEMPORAL: simulamos el envío.
-
-                await new Promise(
-                    resolve => setTimeout(resolve, 1000)
-                );
-
-
-                mostrarResultado(
-                    "✅ Mensaje preparado correctamente.",
-                    "exito"
-                );
-
-
-                formulario.reset();
-
-
-                boton.disabled = false;
-
-                boton.textContent =
-                    "📩 Enviar mensaje";
-
-            }
+        console.log(
+            "Respuesta del Worker:",
+            respuesta.status
         );
 
 
-        function mostrarResultado(texto, tipo) {
+        const datos = await respuesta.json();
 
-            resultado.textContent = texto;
+        console.log(
+            "Datos recibidos:",
+            datos
+        );
 
-            resultado.className = tipo;
+
+        if (!respuesta.ok || !datos.ok) {
+
+            throw new Error(
+                datos.error ||
+                "El servidor rechazó la petición."
+            );
+
         }
 
-    </script>
+
+        mostrarResultado(
+            "✅ ¡Mensaje enviado a Telegram!",
+            "exito"
+        );
+
+
+        formulario.reset();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error:",
+            error
+        );
+
+
+        mostrarResultado(
+            "❌ Error al enviar: " + error.message,
+            "error"
+        );
+
+    }
+
+
+    boton.disabled = false;
+    boton.textContent = "📩 Enviar mensaje";
+
+});
+
+
+function mostrarResultado(texto, tipo) {
+
+    resultado.textContent = texto;
+
+    resultado.className = tipo;
+
+}
+
+</script>
 
 </body>
 </html>
