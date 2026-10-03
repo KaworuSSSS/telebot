@@ -12,9 +12,9 @@ const bookmarkButton = document.getElementById("bookmark");
 const newTabButton = document.getElementById("newTab");
 
 
-// ================================
+// ==============================
 // CONVERTIR TEXTO EN URL
-// ================================
+// ==============================
 
 function getURL(text) {
 
@@ -32,7 +32,7 @@ function getURL(text) {
     return text;
   }
 
-  // Parece una dirección web
+  // Dirección web
   if (
     text.includes(".") &&
     !text.includes(" ")
@@ -40,15 +40,15 @@ function getURL(text) {
     return "https://" + text;
   }
 
-  // Si no es URL, buscar en Google
+  // Buscar en Google
   return "https://www.google.com/search?q=" +
     encodeURIComponent(text);
 }
 
 
-// ================================
+// ==============================
 // NAVEGAR
-// ================================
+// ==============================
 
 function navigate(text) {
 
@@ -62,51 +62,47 @@ function navigate(text) {
 
   updateTabTitle(url);
 
-  // Abrir página fuera de nuestro iframe
+  // Abrir fuera de Nova
   window.open(url, "_blank");
 }
 
 
-// ================================
+// ==============================
 // BARRA DE DIRECCIONES
-// ================================
+// ==============================
 
-address.addEventListener("keydown", function(event) {
+address.addEventListener("keydown", function (event) {
 
   if (event.key === "Enter") {
-
     navigate(address.value);
-
   }
 
 });
 
 
-// ================================
+// ==============================
 // BUSCADOR DE INICIO
-// ================================
+// ==============================
 
-homeSearch.addEventListener("keydown", function(event) {
+homeSearch.addEventListener("keydown", function (event) {
 
   if (event.key === "Enter") {
-
     navigate(homeSearch.value);
-
   }
 
 });
 
 
-// ================================
+// ==============================
 // ATAJOS
-// ================================
+// ==============================
 
 const shortcuts =
   document.querySelectorAll(".shortcuts button");
 
-shortcuts.forEach(button => {
+shortcuts.forEach(function (button) {
 
-  button.addEventListener("click", function() {
+  button.addEventListener("click", function () {
 
     const url = button.dataset.url;
 
@@ -117,17 +113,16 @@ shortcuts.forEach(button => {
 });
 
 
-// ================================
+// ==============================
 // INICIO
-// ================================
+// ==============================
 
-homeButton.addEventListener("click", function() {
-
-  homePage.style.display = "flex";
+homeButton.addEventListener("click", function () {
 
   address.value = "";
-
   homeSearch.value = "";
+
+  homePage.style.display = "flex";
 
   document.querySelector(".tab-title").textContent =
     "Nueva pestaña";
@@ -135,44 +130,44 @@ homeButton.addEventListener("click", function() {
 });
 
 
-// ================================
+// ==============================
 // RECARGAR
-// ================================
+// ==============================
 
-reloadButton.addEventListener("click", function() {
+reloadButton.addEventListener("click", function () {
 
   window.location.reload();
 
 });
 
 
-// ================================
+// ==============================
 // ATRÁS
-// ================================
+// ==============================
 
-backButton.addEventListener("click", function() {
+backButton.addEventListener("click", function () {
 
   window.history.back();
 
 });
 
 
-// ================================
+// ==============================
 // ADELANTE
-// ================================
+// ==============================
 
-forwardButton.addEventListener("click", function() {
+forwardButton.addEventListener("click", function () {
 
   window.history.forward();
 
 });
 
 
-// ================================
+// ==============================
 // FAVORITOS
-// ================================
+// ==============================
 
-bookmarkButton.addEventListener("click", function() {
+bookmarkButton.addEventListener("click", function () {
 
   if (!address.value) {
     return;
@@ -207,15 +202,14 @@ bookmarkButton.addEventListener("click", function() {
     );
 
     bookmarkButton.textContent = "☆";
-
   }
 
 });
 
 
-// ================================
+// ==============================
 // TÍTULO DE PESTAÑA
-// ================================
+// ==============================
 
 function updateTabTitle(url) {
 
@@ -240,14 +234,13 @@ function updateTabTitle(url) {
 }
 
 
-// ================================
+// ==============================
 // NUEVA PESTAÑA
-// ================================
+// ==============================
 
-newTabButton.addEventListener("click", function() {
+newTabButton.addEventListener("click", function () {
 
   address.value = "";
-
   homeSearch.value = "";
 
   homePage.style.display = "flex";
