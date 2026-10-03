@@ -1,0 +1,287 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #111318;
+  color: white;
+  overflow: hidden;
+}
+
+.browser {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* PESTAÑAS */
+
+.tabs {
+  height: 42px;
+  background: #181a20;
+  display: flex;
+  align-items: end;
+  padding-left: 8px;
+  gap: 5px;
+}
+
+.tab {
+  height: 36px;
+  min-width: 190px;
+  max-width: 260px;
+  background: #242730;
+  border-radius: 10px 10px 0 0;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 12px;
+
+  color: #ddd;
+}
+
+.tab.active {
+  background: #30343e;
+}
+
+.tab-title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.close-tab {
+  border: 0;
+  background: transparent;
+  color: #aaa;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.close-tab:hover {
+  color: white;
+}
+
+.new-tab {
+  width: 35px;
+  height: 35px;
+  border: 0;
+  background: transparent;
+  color: white;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+/* BARRA */
+
+.toolbar {
+  height: 54px;
+  background: #20232a;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+}
+
+.toolbar button {
+  width: 36px;
+  height: 36px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: transparent;
+  color: #ddd;
+
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.toolbar button:hover {
+  background: #30343e;
+}
+
+.address-container {
+  flex: 1;
+  height: 38px;
+
+  background: #30343e;
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 14px;
+  gap: 10px;
+}
+
+.address-container input {
+  flex: 1;
+
+  border: 0;
+  outline: none;
+
+  background: transparent;
+  color: white;
+
+  font-size: 15px;
+}
+
+.address-container input::placeholder {
+  color: #aaa;
+}
+
+/* CONTENIDO */
+
+main {
+  flex: 1;
+  position: relative;
+}
+
+.home-page {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at top,
+      #29345c,
+      #111318 60%
+    );
+}
+
+.logo {
+  font-size: 64px;
+  font-weight: bold;
+
+  margin-bottom: 8px;
+
+  background: linear-gradient(
+    90deg,
+    #6ea8ff,
+    #b77cff
+  );
+
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.logo span {
+  color: #7aa8ff;
+}
+
+.home-page p {
+  color: #aaa;
+  margin-bottom: 35px;
+}
+
+.search-box {
+  width: min(600px, 80%);
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+  padding: 0 20px;
+
+  border-radius: 28px;
+
+  background: #252936;
+
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, 0.3);
+}
+
+.search-box input {
+  flex: 1;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+  color: white;
+
+  font-size: 17px;
+}
+
+.search-box input::placeholder {
+  color: #999;
+}
+
+/* ATAJOS */
+
+.shortcuts {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.shortcuts button {
+  min-width: 120px;
+
+  border: 0;
+  border-radius: 12px;
+
+  padding: 12px;
+
+  background: #20232a;
+  color: #ddd;
+
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.shortcuts button:hover {
+  background: #30343e;
+  transform: translateY(-2px);
+}
+
+.shortcuts span {
+  font-size: 22px;
+}
+
+/* WEB */
+
+#webview {
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+
+  background: white;
+}
+
+/* MÓVIL */
+
+@media (max-width: 600px) {
+
+  .tab {
+    min-width: 150px;
+  }
+
+  .shortcuts {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .logo {
+    font-size: 45px;
+  }
+
+}
