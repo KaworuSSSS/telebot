@@ -2,7 +2,6 @@ const address = document.getElementById("address");
 const homeSearch = document.getElementById("homeSearch");
 
 const homePage = document.querySelector(".home-page");
-const webview = document.getElementById("webview");
 
 const backButton = document.getElementById("back");
 const forwardButton = document.getElementById("forward");
@@ -12,10 +11,11 @@ const homeButton = document.getElementById("home");
 const bookmarkButton = document.getElementById("bookmark");
 const newTabButton = document.getElementById("newTab");
 
-const shortcuts = document.querySelectorAll(".shortcuts button");
 
+// ================================
+// CONVERTIR TEXTO EN URL
+// ================================
 
-// Convertir lo escrito en una URL
 function getURL(text) {
 
   text = text.trim();
@@ -24,7 +24,7 @@ function getURL(text) {
     return null;
   }
 
-  // Si parece una dirección web
+  // URL completa
   if (
     text.startsWith("http://") ||
     text.startsWith("https://")
@@ -32,6 +32,7 @@ function getURL(text) {
     return text;
   }
 
+  // Parece una dirección web
   if (
     text.includes(".") &&
     !text.includes(" ")
@@ -39,14 +40,18 @@ function getURL(text) {
     return "https://" + text;
   }
 
-  // Si no es URL, hacer una búsqueda
+  // Si no es URL, buscar en Google
   return "https://www.google.com/search?q=" +
     encodeURIComponent(text);
 }
 
 
-// Abrir una página
+// ================================
+// NAVEGAR
+// ================================
+
 function navigate(text) {
+
   const url = getURL(text);
 
   if (!url) {
@@ -55,24 +60,50 @@ function navigate(text) {
 
   address.value = url;
 
-  // Las páginas externas se abren en una pestaña normal
-  window.open(url, "_blank");
-
   updateTabTitle(url);
-});
+
+  // Abrir página fuera de nuestro iframe
+  window.open(url, "_blank");
+}
 
 
-// Buscar desde la página de inicio
-homeSearch.addEventListener("keydown", function(event) {
+// ================================
+// BARRA DE DIRECCIONES
+// ================================
+
+address.addEventListener("keydown", function(event) {
 
   if (event.key === "Enter") {
-    navigate(homeSearch.value);
+
+    navigate(address.value);
+
   }
 
 });
 
 
-// Botones de páginas rápidas
+// ================================
+// BUSCADOR DE INICIO
+// ================================
+
+homeSearch.addEventListener("keydown", function(event) {
+
+  if (event.key === "Enter") {
+
+    navigate(homeSearch.value);
+
+  }
+
+});
+
+
+// ================================
+// ATAJOS
+// ================================
+
+const shortcuts =
+  document.querySelectorAll(".shortcuts button");
+
 shortcuts.forEach(button => {
 
   button.addEventListener("click", function() {
@@ -86,54 +117,61 @@ shortcuts.forEach(button => {
 });
 
 
-// Inicio
-homeButton.addEventListener("click", function() {
+// ================================
+// INICIO
+// ================================
 
-  webview.hidden = true;
-  webview.src = "";
+homeButton.addEventListener("click", function() {
 
   homePage.style.display = "flex";
 
   address.value = "";
 
+  homeSearch.value = "";
+
+  document.querySelector(".tab-title").textContent =
+    "Nueva pestaña";
+
 });
 
 
-// Recargar
+// ================================
+// RECARGAR
+// ================================
+
 reloadButton.addEventListener("click", function() {
 
-  if (!webview.hidden) {
-    webview.contentWindow.location.reload();
-  }
+  window.location.reload();
 
 });
 
 
-// Atrás
+// ================================
+// ATRÁS
+// ================================
+
 backButton.addEventListener("click", function() {
 
-  try {
-    webview.contentWindow.history.back();
-  } catch (error) {
-    console.log(error);
-  }
+  window.history.back();
 
 });
 
 
-// Adelante
+// ================================
+// ADELANTE
+// ================================
+
 forwardButton.addEventListener("click", function() {
 
-  try {
-    webview.contentWindow.history.forward();
-  } catch (error) {
-    console.log(error);
-  }
+  window.history.forward();
 
 });
 
 
-// Favoritos
+// ================================
+// FAVORITOS
+// ================================
+
 bookmarkButton.addEventListener("click", function() {
 
   if (!address.value) {
@@ -141,7 +179,9 @@ bookmarkButton.addEventListener("click", function() {
   }
 
   const favorites =
-    JSON.parse(localStorage.getItem("favorites") || "[]");
+    JSON.parse(
+      localStorage.getItem("favorites") || "[]"
+    );
 
   if (!favorites.includes(address.value)) {
 
@@ -156,7 +196,8 @@ bookmarkButton.addEventListener("click", function() {
 
   } else {
 
-    const index = favorites.indexOf(address.value);
+    const index =
+      favorites.indexOf(address.value);
 
     favorites.splice(index, 1);
 
@@ -166,12 +207,16 @@ bookmarkButton.addEventListener("click", function() {
     );
 
     bookmarkButton.textContent = "☆";
+
   }
 
 });
 
 
-// Cambiar título de pestaña
+// ================================
+// TÍTULO DE PESTAÑA
+// ================================
+
 function updateTabTitle(url) {
 
   const tabTitle =
@@ -195,16 +240,17 @@ function updateTabTitle(url) {
 }
 
 
-// Nueva pestaña
+// ================================
+// NUEVA PESTAÑA
+// ================================
+
 newTabButton.addEventListener("click", function() {
 
-  webview.hidden = true;
-  webview.src = "";
+  address.value = "";
+
+  homeSearch.value = "";
 
   homePage.style.display = "flex";
-
-  address.value = "";
-  homeSearch.value = "";
 
   document.querySelector(".tab-title").textContent =
     "Nueva pestaña";
