@@ -55,20 +55,8 @@ function navigate(text) {
 
   address.value = url;
 
-  // Si es una búsqueda, abrirla normalmente
-  if (
-    url.startsWith("https://www.google.com/search") ||
-    url.startsWith("https://www.bing.com/search")
-  ) {
-    window.open(url, "_blank");
-    return;
-  }
-
-  // Para otras páginas intentamos usar el iframe
-  homePage.style.display = "none";
-  webview.hidden = false;
-
-  webview.src = url;
+  // Las páginas externas se abren en una pestaña normal
+  window.open(url, "_blank");
 
   updateTabTitle(url);
 });
