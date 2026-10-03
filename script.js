@@ -47,7 +47,6 @@ function getURL(text) {
 
 // Abrir una página
 function navigate(text) {
-
   const url = getURL(text);
 
   if (!url) {
@@ -56,22 +55,22 @@ function navigate(text) {
 
   address.value = url;
 
+  // Si es una búsqueda, abrirla normalmente
+  if (
+    url.startsWith("https://www.google.com/search") ||
+    url.startsWith("https://www.bing.com/search")
+  ) {
+    window.open(url, "_blank");
+    return;
+  }
+
+  // Para otras páginas intentamos usar el iframe
   homePage.style.display = "none";
   webview.hidden = false;
 
   webview.src = url;
 
   updateTabTitle(url);
-}
-
-
-// Buscar desde la barra
-address.addEventListener("keydown", function(event) {
-
-  if (event.key === "Enter") {
-    navigate(address.value);
-  }
-
 });
 
 
