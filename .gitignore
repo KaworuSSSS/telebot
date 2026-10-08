@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+venv/
+startup.log
+watchdog.log
+telegram_bot.log
+watchdog.pid
+.env
