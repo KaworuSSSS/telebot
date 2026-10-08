@@ -19,13 +19,15 @@ if [ -f "$PIDFILE" ]; then
         echo "[STARTUP] Watchdog ya está funcionando: PID $OLD_PID" >> "$LOG"
         exit 0
     fi
+
+    rm -f "$PIDFILE"
 fi
 
-# Limpiar procesos viejos
+# Detener procesos anteriores del bot
 pkill -f "/workspaces/telebot/terminal_bot.py" 2>/dev/null || true
 
-# Crear watchdog en segundo plano
-nohup "$APP_DIR/watchdog.sh" \
+# Iniciar watchdog
+nohup /bin/bash "$APP_DIR/watchdog.sh" \
     >> "$APP_DIR/watchdog.log" 2>&1 &
 
 WATCHDOG_PID=$!

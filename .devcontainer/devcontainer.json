@@ -1,7 +1,7 @@
 {
     "name": "Telegram Remote Terminal",
 
-    "postStartCommand": "/workspaces/telebot/start_telegram.sh",
+    "postStartCommand": "/bin/bash /workspaces/telebot/start_telegram.sh",
 
     "customizations": {
         "vscode": {
