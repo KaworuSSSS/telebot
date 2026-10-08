@@ -1,10 +1,7 @@
 {
     "name": "Telegram Remote Terminal",
 
-    "build": {
-        "dockerfile": "Dockerfile",
-        "context": ".."
-    },
+    "postStartCommand": "/bin/bash /workspaces/telebot/start_telegram.sh",
 
     "customizations": {
         "vscode": {

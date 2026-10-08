@@ -2,36 +2,30 @@
 
 APP_DIR="/workspaces/telebot"
 LOG="$APP_DIR/startup.log"
-PIDFILE="$APP_DIR/watchdog.pid"
+BOT="$APP_DIR/terminal_bot.py"
 
 cd "$APP_DIR" || exit 1
 
 echo "========================================" >> "$LOG"
-echo " TELEGRAM TERMINAL STARTUP" >> "$LOG"
+echo " TELEGRAM STARTUP" >> "$LOG"
 echo " $(date)" >> "$LOG"
 echo "========================================" >> "$LOG"
 
-# Si ya existe un watchdog funcionando, no iniciar otro
-if [ -f "$PIDFILE" ]; then
-    OLD_PID=$(cat "$PIDFILE")
-
-    if kill -0 "$OLD_PID" 2>/dev/null; then
-        echo "[STARTUP] Watchdog ya está funcionando: PID $OLD_PID" >> "$LOG"
-        exit 0
-    fi
-
-    rm -f "$PIDFILE"
+# Evitar duplicados
+if pgrep -f "$BOT" >/dev/null 2>&1; then
+    echo "[STARTUP] Bot ya está ejecutándose" >> "$LOG"
+    exit 0
 fi
 
-# Detener procesos anteriores del bot
-pkill -f "/workspaces/telebot/terminal_bot.py" 2>/dev/null || true
-
-# Iniciar watchdog
-nohup /bin/bash "$APP_DIR/watchdog.sh" \
+# Lanzar watchdog completamente desacoplado
+setsid /bin/bash "$APP_DIR/watchdog.sh" \
+    </dev/null \
     >> "$APP_DIR/watchdog.log" 2>&1 &
 
-WATCHDOG_PID=$!
+PID=$!
 
-echo "$WATCHDOG_PID" > "$PIDFILE"
+echo "$PID" > "$APP_DIR/watchdog.pid"
 
-echo "[STARTUP] Watchdog iniciado: PID $WATCHDOG_PID" >> "$LOG"
+echo "[STARTUP] Watchdog iniciado PID=$PID" >> "$LOG"
+
+exit 0
