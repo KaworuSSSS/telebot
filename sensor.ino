@@ -31,8 +31,8 @@ ESP8266WebServer server(80);
 unsigned long lastMsg = 0;
 int value = 0;
 int habilitar = 0;
-int arreglo[16] = {1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16, 17, 18};
-int values[16];
+int arreglo[12] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+int values[12];
 double promedio = 0;
 
 void PaginaSimple() {
@@ -77,24 +77,24 @@ void ActualizarPaso2() {
 
 
 void irradiancia(String &response) {
-    int values[16];
-    int arreglo[16] = {1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16, 17, 18};
+    int values[12];
+    int arreglo[12] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
     float promedio = 0;
 
     // Leer los valores analógicos
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 12; i++) {
         values[i] = analogRead(arreglo[i]);
     }
 
     // Calcular el promedio
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 12; i++) {
         promedio += values[i];
     }
-    promedio /= 16;
+    promedio /= 12;
 
     // Construir la respuesta
     response = "";
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 12; i++) {
        // response += "Valor " + String(i + 1) + ": " + String(values[i]) + "\n";
         response += String(values[i]) + ",";
     }
