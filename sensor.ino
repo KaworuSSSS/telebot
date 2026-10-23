@@ -125,7 +125,7 @@ void setup() {
     Serial.println(WiFi.localIP());
   } else {
     Serial.println("Eror en Wifi");
-  }e}3
+  }
 
 
 
